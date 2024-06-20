@@ -1,0 +1,11 @@
+PIL
+flask
+scikit-image
+torch
+waitress
+cv2
+numpy
+onnxruntime
+pytorch_lightning
+torchvision
+matplotlib
