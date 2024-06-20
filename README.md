@@ -12,7 +12,7 @@ This is script runs a flask based web GUI for the model.
 It uses ONNX model file, no need to install torch for this, it is lightweight and simple.
 
 ## CLI Inference
-* infer_from_onnx.py
+* infer_from_onnx.py  
 You can use this script to directly try out the model on the command line. It receives ONNX and JPG, outputs the enhanced image.
 
 ## Training
