@@ -8,7 +8,7 @@ from infer_from_onnx import infer
 from waitress import serve
 
 # Path to model onnx file
-onnx_file = '2-150.onnx'
+onnx_file = 'onnx_models/model_h2_f150.onnx'
 
 # Host and port for waitress server
 host = '127.0.0.1'
