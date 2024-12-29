@@ -14,17 +14,17 @@ model_input_pkl = 'model_input.pkl'
 
 # Define combinations of layers (fixed missing closing bracket)
 # Example: [[hidden_layers, hidden_features], ...]
-combination_of_layers = [
-    [1, 30],
-    [2, 30],
-    [5, 30],
-    [1, 150],
-    [2, 150],
-    [5, 150],
-    [7, 200]
-]
+#combination_of_layers = [
+#    [1, 30],
+#    [2, 30],
+#    [5, 30],
+#    [1, 150],
+#    [2, 150],
+#    [5, 150],
+#    [7, 200]
+#]
 # Uncomment the line below to use a single combination
-# combination_of_layers = [[2, 150]]
+combination_of_layers = [[2, 150]]
 
 # Change in case any new parameter is added
 image_parameters = {
