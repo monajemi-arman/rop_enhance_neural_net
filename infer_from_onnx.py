@@ -12,12 +12,11 @@ from typing import List
 # Importing CustomDataset from model takes time due to torch. In the future, use a saved JSON of image_parameters dict.
 # CustomDataset is only imported in order to get min and max values from image_parameters dict.
 
-
 def infer(image, onnx_file):
     # Prepare model input (the image stats)
     image_stats = calculate_statistics(image)
     dataset = CustomDataset()
-    model_input = [dataset.normalize(image_stats, to_numpy=True)]
+    model_input = [dataset.normalize_full(image_stats, to_numpy=True)]  # Use normalize_full to get all 21 features
 
     # Onnx Runtime Session
     ort_sess = ort.InferenceSession(onnx_file)
@@ -33,11 +32,9 @@ def infer(image, onnx_file):
     output_image = edit_image(image, output)
     return output_image
 
-
 def get_image_files(input_path: Path) -> List[Path]:
     supported_extensions = {'.png', '.jpg', '.jpeg', '.bmp', '.tiff', '.tif'}
     return [p for p in input_path.iterdir() if p.suffix.lower() in supported_extensions and p.is_file()]
-
 
 def process_image(image_path: Path, output_dir: Path, onnx_file: Path):
     image = cv2.imread(str(image_path))
@@ -48,7 +45,6 @@ def process_image(image_path: Path, output_dir: Path, onnx_file: Path):
     output_filename = output_dir / f"{image_path.stem}_out{image_path.suffix}"
     cv2.imwrite(str(output_filename), output_image)
     print(f"Processed {image_path} -> {output_filename}")
-
 
 if __name__ == '__main__':
     # Input arguments

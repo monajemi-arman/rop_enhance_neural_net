@@ -1,4 +1,4 @@
-#!/usr/bin/environ python
+#!/usr/bin/env python3
 from skimage.restoration import estimate_sigma, denoise_wavelet
 from skimage.util import random_noise
 import cv2
@@ -26,10 +26,15 @@ def adjust_brightness(image, brightness=0):
     brightness = int(brightness)  # Model may not return int
     hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
     h, s, v = cv2.split(hsv)
-    # Limit values to 255, no overflow
-    lim = 255 - brightness
-    v[v > lim] = 255
-    v[v <= lim] += brightness
+
+    if brightness > 0:
+        # Use cv2.add to handle overflow
+        v = cv2.add(v, brightness)
+    elif brightness < 0:
+        # Use cv2.subtract to handle underflow
+        v = cv2.subtract(v, abs(brightness))
+    # If brightness == 0, no change
+
     hsv_new = cv2.merge((h, s, v))
     return cv2.cvtColor(hsv_new, cv2.COLOR_HSV2BGR)
 
@@ -106,12 +111,20 @@ def adjust_denoise(image, denoise):
     return denoised
 
 
-image_functions = {'contrast': adjust_contrast, 'brightness': adjust_brightness, 'gamma': adjust_gamma,
-                   'cliplimit': adjust_cliplimit, 'strength': adjust_strength, 'saturation': adjust_saturation
-                   }
+image_functions = {
+    'contrast': adjust_contrast,
+    'brightness': adjust_brightness,
+    'gamma': adjust_gamma,
+    'cliplimit': adjust_cliplimit,
+    'strength': adjust_strength,
+    'saturation': adjust_saturation
+}
 
 
 def edit_image(image, properties):
     for key, value in properties.items():
-        image = image_functions[key](image, properties[key])
+        if key in image_functions:
+            image = image_functions[key](image, value)
+        else:
+            print(f"Warning: No function defined for key '{key}'. Skipping.")
     return image
