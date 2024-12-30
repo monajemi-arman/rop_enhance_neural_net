@@ -4,4 +4,4 @@ original_git/low/*
 onnx_models/
 *.pkl
 model_output.json
-
+lightning_logs
